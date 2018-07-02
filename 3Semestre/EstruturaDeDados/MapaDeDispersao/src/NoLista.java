@@ -1,6 +1,6 @@
 /**
  *
- * @author vinic
+ * @author Vinícius Luis da Silva
  */
 public class NoLista<T> {
     
@@ -21,6 +21,11 @@ public class NoLista<T> {
     
     public void setProximo(NoLista<T> proximo) {
         this.proximo = proximo;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.info.equals(obj);
     }
     
 }

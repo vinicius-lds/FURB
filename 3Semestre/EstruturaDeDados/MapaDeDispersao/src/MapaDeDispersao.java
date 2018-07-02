@@ -18,11 +18,20 @@ public class MapaDeDispersao<T> {
         if(this.info[hash] == null) {
             this.info[hash] = new ListaEncadeada<>();
         }
-        this.info[hash].inserir(new NoMapa<>(chave, dado));
+        NoMapa<T> no = new NoMapa<>();
+        no.setChave(chave);
+        no.setInfo(dado);
+        this.info[hash].inserir(no);
     }
     
     public void remover(int chave) {
-        this.info[calcularHash(chave)].retirar(new NoMapa<>(chave));
+        int hash = calcularHash(chave);
+        if(this.info[hash] == null) {
+            return;
+        }
+        NoMapa<T> no = new NoMapa<>();
+        no.setChave(chave);
+        this.info[hash].retirar(no);
     }
     
     public T buscar(int chave) {
@@ -30,21 +39,22 @@ public class MapaDeDispersao<T> {
         if(this.info[hash] == null) {
             return null;
         }
-        NoMapa<T> noAux = new NoMapa<>(chave);
-        NoLista<NoMapa<T>> noListaAux = this.info[hash].buscar(noAux);
-        if(noListaAux == null) {
-            return null;
+        NoMapa<T> noAux = new NoMapa<>();
+        noAux.setChave(chave);
+        NoLista<NoMapa<T>> no = this.info[hash].buscar(noAux);
+        if(no != null) {
+            return no.getInfo().getInfo();
         }
-        noAux = noListaAux.getInfo();
-        
-        return noAux.getInfo();
+        return null;
     }
     
     public static void main(String[] args) {
         MapaDeDispersao map = new MapaDeDispersao<>(7);
         map.inserir(150, "oi");
         map.inserir(2, "tchau");
-        map.buscar(150);
+        System.out.println(map.buscar(150));
+        map.remover(150);
+        
     }
     
 }

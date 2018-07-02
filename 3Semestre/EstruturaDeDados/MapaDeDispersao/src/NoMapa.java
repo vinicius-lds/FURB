@@ -5,14 +5,8 @@ public class NoMapa<T> {
     
     private int chave;
     private T info;
-
-    public NoMapa(int chave) {
-        this.chave = chave;
-    }
     
-    public NoMapa(int chave, T info) {
-        this.chave = chave;
-        this.info = info;
+    public NoMapa() {
     }
     
     public int getChave() {
@@ -42,7 +36,7 @@ public class NoMapa<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final NoMapa<?> other = (NoMapa<?>) obj;
+        final NoMapa<T> other = (NoMapa<T>) obj;
         if (this.chave != other.chave) {
             return false;
         }

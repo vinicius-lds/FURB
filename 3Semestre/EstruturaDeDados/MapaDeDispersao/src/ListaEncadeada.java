@@ -1,5 +1,5 @@
 /*/
- * @author vinic
+ * @author Vinícius Luis da Silva
 /*/
 public class ListaEncadeada<T> {
 
@@ -47,23 +47,19 @@ public class ListaEncadeada<T> {
     }
     
     public void retirar(T info) {
-        
         NoLista<T> atual = this.primeiro;
         NoLista<T> anterior = null;
-        NoLista<T> noLocalizado = null;
-        while (atual != null) {            
-            if(atual.getInfo().equals(info)) {
-                noLocalizado = atual;
-                break;
-            }
+        while (atual != null && (!atual.equals(info))) {
             anterior = atual;
             atual = atual.getProximo();
         }
         
-        if(noLocalizado != this.primeiro) {
-            anterior.setProximo(atual.getProximo());
-        } else {
-            this.primeiro.setProximo(this.primeiro.getProximo());
+        if(atual != null) {
+            if(anterior == null) {
+                this.primeiro = atual.getProximo();
+            } else {
+                anterior.setProximo(atual.getProximo());
+            }
         }
         
     }
@@ -126,20 +122,6 @@ public class ListaEncadeada<T> {
             atual = atual.getProximo();
         }
         return (str.equals("")) ? str : str.substring(0, str.length() - 2) + ".";
-    }
-    
-    public static void main(String[] args) {
-        
-        ListaEncadeada<Integer> ints = new ListaEncadeada<>();
-        
-        for (int i = 0; i < 10; i++) {
-            ints.inserir(i);
-        }
-        
-        ints.exibir();
-        ListaEncadeada<Integer> ints2 = ints.criarSubLista(2, 5);
-        ints2.exibir();
-        
     }
     
 }
