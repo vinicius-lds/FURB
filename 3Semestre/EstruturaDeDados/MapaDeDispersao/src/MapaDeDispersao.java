@@ -100,7 +100,6 @@ public class MapaDeDispersao<T> {
     }
 
     public double getFatorCarga() {
-        System.out.println(this.info.length);
         return ((Integer)this.calcularQtdObjetos()).doubleValue() / this.info.length;
     }
 
@@ -128,6 +127,25 @@ public class MapaDeDispersao<T> {
             } 
         }
         return list;
+    }
+    
+    public static void main(String[] args) {
+        MapaDeDispersao map = new MapaDeDispersao<>();
+        map.inserir(150, "no1");
+        map.inserir(2, "no2");
+        map.inserir(12, "no3");
+        map.inserir(70, "no4");
+        map.inserir(50, "no5");
+        map.inserir(1500, "no6");
+        map.inserir(1001, "no7");
+        System.out.println(map.buscar(150));
+        map.remover(150);
+        System.out.println("Comprimento " + map.calcularQtdObjetos());
+        map.realocarMapa(31);
+        System.out.println(map.buscar(50));
+        System.out.println(map.calcularProximoPrimo());
+        System.out.println(map.getFatorCarga());
+        System.out.println(map.hashToList());
     }
 
 }
