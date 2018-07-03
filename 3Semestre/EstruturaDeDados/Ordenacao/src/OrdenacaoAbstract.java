@@ -1,10 +1,6 @@
 /**
  * @author Vinicius Luis da Silva
  */
-
-/**
- * @author Vinicius Luis da Silva && Carlos Henrique Ponciano da Silva
- */
 public abstract class OrdenacaoAbstract<T extends Comparable<T>> {
 
     private T[] info;
@@ -18,17 +14,20 @@ public abstract class OrdenacaoAbstract<T extends Comparable<T>> {
     }
     
     public void trimm() {
-        int tamanho;
-        for (tamanho = 1; tamanho < this.getInfo().length; tamanho++) {
-            if(this.getInfo()[tamanho] == null) {
-                break;
+        int tamanho = 0;
+        for (int i = 0; i < this.info.length; i++) {
+            if(this.info[i] != null) {
+                tamanho++;
             }
         }
-        T aux[] = this.info.clone();
-        this.info = (T[]) new Comparable[tamanho];
-        for (int i = 0; i < tamanho; i++) {
-            this.info[i] = aux[i];
+        T[] aux = (T[])new Comparable[tamanho];
+        for (int i = 0, j = 0; i < this.info.length; i++) {
+            if(this.info[i] != null) {
+                aux[j] = this.info[i];
+                j++;
+            }
         }
+        this.info = aux;
     }
     
     public void trocar(int a, int b) {
