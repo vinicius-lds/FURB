@@ -1,20 +1,22 @@
-
 /**
  * @author Vinícius Luis da Silva
  */
 public class MapaDeDispersao<T> {
 
     private ListaEncadeada<NoMapa<T>>[] info;
-    private double fatorDeCarga;
+    private double fatorDeCargaMaximo;
+    private double fatorDeCargaMinimo;
 
     public MapaDeDispersao(int tamanho) {
-        this.info = new ListaEncadeada[tamanho];
-        this.fatorDeCarga = 0.75;
+        this.info = new ListaEncadeada[(tamanho < 2) ? 2 : tamanho];
+        this.fatorDeCargaMaximo = 0.75;
+        this.fatorDeCargaMinimo = 0.6;
     }
 
     public MapaDeDispersao() {
-        this.info = new ListaEncadeada[1];
-        this.fatorDeCarga = 0.75;
+        this.info = new ListaEncadeada[2];
+        this.fatorDeCargaMaximo = 0.75;
+        this.fatorDeCargaMinimo = 0.6;
     }
     
     private int calcularHash(int chave) {
@@ -30,7 +32,7 @@ public class MapaDeDispersao<T> {
         no.setChave(chave);
         no.setInfo(dado);
         this.info[hash].inserir(no);
-        if(this.getFatorCarga() > this.fatorDeCarga) {
+        if(this.getFatorCarga() > this.fatorDeCargaMaximo) {
             this.realocarMapa(this.calcularProximoPrimo());
         }
     }
@@ -43,6 +45,9 @@ public class MapaDeDispersao<T> {
         NoMapa<T> no = new NoMapa<>();
         no.setChave(chave);
         this.info[hash].retirar(no);
+        if(this.getFatorCarga() < this.fatorDeCargaMinimo) {
+            this.realocarMapa(this.calcularPrimoAnterior());
+        }
     }
 
     public T buscar(int chave) {
@@ -90,26 +95,48 @@ public class MapaDeDispersao<T> {
     }
 
     private int calcularProximoPrimo() {
-        int i = this.info.length + 1;
-        int j;
-        do {
-            for (j = 2; (j < i) && (i % j != 0); j++) {}
-            i++;
-        } while(i == j);
-        return i;
+        int n = this.info.length + 1;
+        for (;;n++) {
+            if(isPrimo(n)) {
+                break;
+            }
+        }
+        System.out.println("Numero primo " + n);
+        return n;
+    }
+    
+    private int calcularPrimoAnterior() {
+        int n = this.info.length - 1;
+        for (;;n--) {
+            if(isPrimo(n)) {
+                if(n < 2) {
+                    return this.info.length + 1;
+                }
+                break;
+            }
+        }
+        return n;
+    }
+    
+    /***
+     * Verfica se um nomero é primo
+     * @param n número que será testado
+     * @return true se n for primo<br><B>BUG: retorna true quando o número é menor que 2</B>
+     */
+    private boolean isPrimo(int n) {
+        double aux = ((Integer)n).doubleValue();
+        for (int i = 2; i < (n / 2); i++) {
+            if((aux % i) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public double getFatorCarga() {
         return ((Integer)this.calcularQtdObjetos()).doubleValue() / this.info.length;
     }
 
-    public void setFatorDeCarga(double fatorDeCarga) {
-        if(this.fatorDeCarga < 0) {
-            throw new IllegalArgumentException("O Fator de Carga deve ser positivo!");
-        }
-        this.fatorDeCarga = fatorDeCarga;
-    }
-    
     public void garantirTamanho(int tamanho) {
         this.realocarMapa(tamanho);
     }
@@ -128,9 +155,33 @@ public class MapaDeDispersao<T> {
         }
         return list;
     }
+
+    public void setFatorDeCargaMaximo(double fatorDeCargaMaximo) {
+        if(fatorDeCargaMaximo < 0) {
+            throw new IllegalArgumentException("O Fator de Carga máximo deve ser positivo!");
+        }
+        this.fatorDeCargaMaximo = fatorDeCargaMaximo;
+    }
+
+    public void setFatorDeCargaMinimo(double fatorDeCargaMinimo) {
+        if(fatorDeCargaMinimo < 0) {
+            throw new IllegalArgumentException("O Fator de Carga minímo deve ser positivo!");
+        }
+        this.fatorDeCargaMinimo = fatorDeCargaMinimo;
+    }
+
+    public double getFatorDeCargaMaximo() {
+        return fatorDeCargaMaximo;
+    }
+
+    public double getFatorDeCargaMinimo() {
+        return fatorDeCargaMinimo;
+    }
     
     public static void main(String[] args) {
         MapaDeDispersao map = new MapaDeDispersao<>();
+        map.setFatorDeCargaMinimo(0.6);
+        System.out.println(map.info.length);
         map.inserir(150, "no1");
         map.inserir(2, "no2");
         map.inserir(12, "no3");
@@ -138,14 +189,15 @@ public class MapaDeDispersao<T> {
         map.inserir(50, "no5");
         map.inserir(1500, "no6");
         map.inserir(1001, "no7");
-        System.out.println(map.buscar(150));
+        System.out.println(map.info.length);
         map.remover(150);
-        System.out.println("Comprimento " + map.calcularQtdObjetos());
-        map.realocarMapa(31);
-        System.out.println(map.buscar(50));
-        System.out.println(map.calcularProximoPrimo());
-        System.out.println(map.getFatorCarga());
-        System.out.println(map.hashToList());
+        map.remover(2);
+        map.remover(12);
+        map.remover(70);
+        map.remover(50);
+        map.remover(1500);
+        map.remover(1001);
+        System.out.println(map.info.length);
     }
 
 }
