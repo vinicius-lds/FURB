@@ -101,7 +101,6 @@ public class MapaDeDispersao<T> {
                 break;
             }
         }
-        System.out.println("Numero primo " + n);
         return n;
     }
     
