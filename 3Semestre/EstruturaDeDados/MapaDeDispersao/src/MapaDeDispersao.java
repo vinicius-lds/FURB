@@ -5,11 +5,18 @@
 public class MapaDeDispersao<T> {
 
     private ListaEncadeada<NoMapa<T>>[] info;
+    private double fatorDeCarga;
 
     public MapaDeDispersao(int tamanho) {
         this.info = new ListaEncadeada[tamanho];
+        this.fatorDeCarga = 0.75;
     }
 
+    public MapaDeDispersao() {
+        this.info = new ListaEncadeada[1];
+        this.fatorDeCarga = 0.75;
+    }
+    
     private int calcularHash(int chave) {
         return chave % info.length;
     }
@@ -23,6 +30,9 @@ public class MapaDeDispersao<T> {
         no.setChave(chave);
         no.setInfo(dado);
         this.info[hash].inserir(no);
+        if(this.getFatorCarga() > this.fatorDeCarga) {
+            this.realocarMapa(this.calcularProximoPrimo());
+        }
     }
 
     public void remover(int chave) {
@@ -76,23 +86,48 @@ public class MapaDeDispersao<T> {
                 }
             }
         }
+        this.info = aux;
     }
 
-    public static void main(String[] args) {
-        MapaDeDispersao map = new MapaDeDispersao<>(7);
-        map.inserir(150, "no1");
-        map.inserir(2, "no2");
-        map.inserir(12, "no3");
-        map.inserir(70, "no4");
-        map.inserir(50, "no5");
-        map.inserir(1500, "no6");
-        map.inserir(1001, "no7");
-        System.out.println(map.buscar(150));
-        map.remover(150);
-        System.out.println("Comprimento " + map.calcularQtdObjetos());
-        map.realocarMapa(150);
-        System.out.println(map.buscar(50));
+    private int calcularProximoPrimo() {
+        int i = this.info.length + 1;
+        int j;
+        do {
+            for (j = 2; (j < i) && (i % j != 0); j++) {}
+            i++;
+        } while(i == j);
+        return i;
+    }
 
+    public double getFatorCarga() {
+        System.out.println(this.info.length);
+        return ((Integer)this.calcularQtdObjetos()).doubleValue() / this.info.length;
+    }
+
+    public void setFatorDeCarga(double fatorDeCarga) {
+        if(this.fatorDeCarga < 0) {
+            throw new IllegalArgumentException("O Fator de Carga deve ser positivo!");
+        }
+        this.fatorDeCarga = fatorDeCarga;
+    }
+    
+    public void garantirTamanho(int tamanho) {
+        this.realocarMapa(tamanho);
+    }
+    
+    public ListaEncadeada<T> hashToList() {
+        ListaEncadeada<T> list = new ListaEncadeada<>();
+        NoLista<NoMapa<T>> no;
+        for (int i = 0; i < this.info.length; i++) {
+            if(info[i] != null) {
+                no = info[i].getPrimeiro();
+                while(no != null) {
+                    list.inserir(no.getInfo().getInfo());
+                    no = no.getProximo();
+                }
+            } 
+        }
+        return list;
     }
 
 }

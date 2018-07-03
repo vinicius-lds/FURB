@@ -1,5 +1,5 @@
 /**
- * @author vinic
+ * @author Vinícius Luis da Silva
  */
 public class ListaOrdenada<T extends Comparable<T>> extends ListaAbstract<T> {
 

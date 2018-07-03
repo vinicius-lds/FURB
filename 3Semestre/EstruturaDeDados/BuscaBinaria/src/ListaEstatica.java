@@ -1,5 +1,5 @@
 /**
- * @author vinic
+ * @author Vinícius Luis da Silva
  */
 public class ListaEstatica<T> extends ListaAbstract<T> {
 
