@@ -5,8 +5,8 @@ package questao5;
  */
 public class Main {
     
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws Exception {
+        Anagrama a = new Anagrama("src/questao5/anagramas.txt");
     }
     
 }
