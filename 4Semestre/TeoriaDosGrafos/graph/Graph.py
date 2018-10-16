@@ -72,3 +72,22 @@ class Graph(object):
         self.print_adjacency_matrix()
         print('O grafo {} conexo!'.format('é' if is_connected else 'não é'))
         print()
+
+    def connected_components(self):
+        disjointed_sets = dict()
+        for x in range(len(self.__adjacency_matrix)):
+            disjointed_sets[x] = set()
+            disjointed_sets[x].add(x)
+
+        for x in range(len(self.__adjacency_matrix)):
+            for y in range(len(self.__adjacency_matrix[x])):
+                if self.__adjacency_matrix[x][y] > 0:
+                    for element in disjointed_sets[y]:
+                        disjointed_sets[x].add(element)
+                    disjointed_sets[y].clear()
+
+        print('Conjuntos disjuntos resultantes:')
+        for key in disjointed_sets:
+            current_set = disjointed_sets.get(key)
+            if len(current_set) > 0:
+                print(current_set)
