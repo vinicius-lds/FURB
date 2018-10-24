@@ -86,8 +86,10 @@ class Graph(object):
                         disjointed_sets[x].add(element)
                     disjointed_sets[y].clear()
 
+        self.print_adjacency_matrix()
         print('Conjuntos disjuntos resultantes:')
         for key in disjointed_sets:
             current_set = disjointed_sets.get(key)
             if len(current_set) > 0:
                 print(current_set)
+        print()
