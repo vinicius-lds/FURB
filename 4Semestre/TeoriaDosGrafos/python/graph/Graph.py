@@ -4,12 +4,12 @@ from Util import Util
 
 class Graph(object):
     def __init__(self, matrix):
-        self.__adjacency_matrix = matrix
+        self.adjacency_matrix = matrix
 
     def print_adjacency_matrix(self):
-        for x in range(len(self.__adjacency_matrix)):
-            for y in range(len(self.__adjacency_matrix[x])):
-                print(" {} ".format(self.__adjacency_matrix[x][y]), end='')
+        for x in range(len(self.adjacency_matrix)):
+            for y in range(len(self.adjacency_matrix[x])):
+                print(" {} ".format(self.adjacency_matrix[x][y]), end='')
             print()
 
     def is_bipartite(self):
@@ -19,7 +19,7 @@ class Graph(object):
         is_bipartite = True
 
         # iterates through adjacency matrix
-        for x in range(len(self.__adjacency_matrix)):
+        for x in range(len(self.adjacency_matrix)):
 
             # defines if current vertex should be bolsonaro or lula
             # defines which set this particular vertex belongs, and which it doesn't
@@ -31,8 +31,8 @@ class Graph(object):
             current_set.add(x)
             # gets all the vertex's adjacent to the current vertex
             adjacent_vertices = list()
-            for y in range(len(self.__adjacency_matrix)):
-                if self.__adjacency_matrix[x][y] > 0:
+            for y in range(len(self.adjacency_matrix)):
+                if self.adjacency_matrix[x][y] > 0:
                     adjacent_vertices.append(y)
 
             # if current set contains any of the adjacent vertex's return false
@@ -50,12 +50,12 @@ class Graph(object):
         print()
 
     def goodman_algorithm(self):
-        vertex_count = len(self.__adjacency_matrix)
+        vertex_count = len(self.adjacency_matrix)
         if vertex_count == 1:
             is_connected = True
         else:
             vertices_not_explored = Util.get_list_of(vertex_count)
-            adjacency_matrix_aux = deepcopy(self.__adjacency_matrix)
+            adjacency_matrix_aux = deepcopy(self.adjacency_matrix)
 
             while True:
                 current_vertex = vertices_not_explored.pop()
@@ -75,13 +75,13 @@ class Graph(object):
 
     def connected_components(self):
         disjointed_sets = dict()
-        for x in range(len(self.__adjacency_matrix)):
+        for x in range(len(self.adjacency_matrix)):
             disjointed_sets[x] = set()
             disjointed_sets[x].add(x)
 
-        for x in range(len(self.__adjacency_matrix)):
-            for y in range(len(self.__adjacency_matrix[x])):
-                if self.__adjacency_matrix[x][y] > 0:
+        for x in range(len(self.adjacency_matrix)):
+            for y in range(len(self.adjacency_matrix[x])):
+                if self.adjacency_matrix[x][y] > 0:
                     for element in disjointed_sets[y]:
                         disjointed_sets[x].add(element)
                     disjointed_sets[y].clear()
@@ -93,3 +93,4 @@ class Graph(object):
             if len(current_set) > 0:
                 print(current_set)
         print()
+

@@ -10,7 +10,7 @@ public class Barbeiro extends Thread {
     }
 
     public synchronized void acordar() {
-        this.notify();
+        notify();
     }
 
     @Override
@@ -27,9 +27,10 @@ public class Barbeiro extends Thread {
                 }
                 System.out.println("O barbeiro acordou");
             } else {
+                c.chamar();
                 System.out.println(c + " esta cortando o cabelo");
                 try {
-                    sleep(500);
+                    sleep(1000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

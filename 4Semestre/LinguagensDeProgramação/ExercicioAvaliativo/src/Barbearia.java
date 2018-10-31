@@ -36,7 +36,7 @@ public class Barbearia {
             while(true) {
                 new Cliente(barb).start();
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {}
             }
         }).run();

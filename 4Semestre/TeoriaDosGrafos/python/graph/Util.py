@@ -1,3 +1,6 @@
+infinity = 999
+
+
 class Util(object):
     @staticmethod
     def get_list_of(size):
@@ -32,3 +35,13 @@ class Util(object):
             return False
         else:
             raise Exception
+
+    @staticmethod
+    def insert_sorted(queue, value):
+        pass
+
+    @staticmethod
+    def poll(queue):
+        value = queue.__getitem__(0)
+        queue.remove(0)
+        return value
